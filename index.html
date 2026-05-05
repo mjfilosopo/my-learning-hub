@@ -1,0 +1,674 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>My Learning Hub</title>
+<link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=DM+Sans:opsz,wght@9..40,300;9..40,400;9..40,500&family=Noto+Sans+JP:wght@300;400;500&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg: #f7f6f3;
+    --surface: #ffffff;
+    --border: #e8e5df;
+    --text: #1a1a1a;
+    --text-muted: #888880;
+    --tag-bg: #f0ede8;
+
+    --done: #4a7c59;
+    --done-bg: #edf4f0;
+    --done-border: #c8dfd0;
+
+    --today: #b85c38;
+    --today-bg: #fdf2ee;
+    --today-border: #e8c4b0;
+
+    --jp-color: #7c5cbf;
+    --jp-bg: #f3f0fb;
+    --jp-border: #d8d0f0;
+
+    --ios-color: #2162c4;
+    --ios-bg: #eef3fc;
+    --ios-border: #c5d7f5;
+
+    --istqb-color: #b85c38;
+    --istqb-bg: #fdf2ee;
+    --istqb-border: #e8c4b0;
+  }
+
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+
+  body {
+    background: var(--bg);
+    font-family: 'DM Sans', 'Noto Sans JP', sans-serif;
+    color: var(--text);
+    min-height: 100vh;
+    padding-bottom: 80px;
+  }
+
+  /* HEADER */
+  header {
+    background: var(--surface);
+    border-bottom: 1px solid var(--border);
+    padding: 36px 48px 28px;
+  }
+
+  .header-top {
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+    gap: 24px;
+    flex-wrap: wrap;
+  }
+
+  .header-left h1 {
+    font-family: 'DM Serif Display', serif;
+    font-size: 2rem;
+    letter-spacing: -0.02em;
+    line-height: 1.15;
+  }
+
+  .header-left .subtitle {
+    font-size: 0.75rem;
+    color: var(--text-muted);
+    margin-top: 6px;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    font-weight: 500;
+  }
+
+  .header-date {
+    font-size: 0.78rem;
+    color: var(--text-muted);
+    text-align: right;
+    margin-top: 4px;
+  }
+
+  /* COURSE PILLS */
+  .course-pills {
+    display: flex;
+    gap: 10px;
+    margin-top: 24px;
+    flex-wrap: wrap;
+  }
+
+  .course-pill {
+    display: flex;
+    align-items: center;
+    gap: 7px;
+    padding: 6px 14px;
+    border-radius: 20px;
+    font-size: 0.73rem;
+    font-weight: 500;
+    letter-spacing: 0.04em;
+    cursor: pointer;
+    border: 1.5px solid transparent;
+    transition: opacity 0.2s, border-color 0.2s;
+  }
+
+  .course-pill.active { opacity: 1; }
+  .course-pill.inactive { opacity: 0.35; }
+
+  .pill-jp    { background: var(--jp-bg);    color: var(--jp-color);    border-color: var(--jp-border); }
+  .pill-ios   { background: var(--ios-bg);   color: var(--ios-color);   border-color: var(--ios-border); }
+  .pill-istqb { background: var(--istqb-bg); color: var(--istqb-color); border-color: var(--istqb-border); }
+
+  .pill-dot {
+    width: 7px;
+    height: 7px;
+    border-radius: 50%;
+  }
+
+  .dot-jp    { background: var(--jp-color); }
+  .dot-ios   { background: var(--ios-color); }
+  .dot-istqb { background: var(--istqb-color); }
+
+  /* MAIN */
+  main {
+    max-width: 860px;
+    margin: 0 auto;
+    padding: 40px 24px 0;
+  }
+
+  /* SECTION */
+  .section {
+    margin-bottom: 48px;
+  }
+
+  .section-header {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    margin-bottom: 16px;
+  }
+
+  .section-title {
+    font-family: 'DM Serif Display', serif;
+    font-size: 1.25rem;
+    letter-spacing: -0.01em;
+  }
+
+  .section-tag {
+    font-size: 0.68rem;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    padding: 3px 10px;
+    border-radius: 20px;
+    font-weight: 500;
+  }
+
+  .tag-jp    { background: var(--jp-bg);    color: var(--jp-color); }
+  .tag-ios   { background: var(--ios-bg);   color: var(--ios-color); }
+  .tag-istqb { background: var(--istqb-bg); color: var(--istqb-color); }
+
+  /* PROGRESS BAR */
+  .section-progress {
+    margin-bottom: 16px;
+  }
+
+  .prog-label {
+    display: flex;
+    justify-content: space-between;
+    font-size: 0.72rem;
+    color: var(--text-muted);
+    margin-bottom: 6px;
+  }
+
+  .prog-bar {
+    height: 3px;
+    background: var(--border);
+    border-radius: 2px;
+    overflow: hidden;
+  }
+
+  .prog-fill {
+    height: 100%;
+    border-radius: 2px;
+    transition: width 0.6s ease;
+  }
+
+  .fill-jp    { background: var(--jp-color); }
+  .fill-ios   { background: var(--ios-color); }
+  .fill-istqb { background: var(--istqb-color); }
+
+  /* LESSON ROW */
+  .lesson-row {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    margin-bottom: 10px;
+    display: flex;
+    align-items: center;
+    gap: 18px;
+    padding: 16px 22px;
+    transition: box-shadow 0.2s;
+  }
+
+  .lesson-row:hover { box-shadow: 0 4px 16px rgba(0,0,0,0.05); }
+
+  .lesson-row.is-done    { border-color: var(--done-border); background: #fbfdfc; }
+  .lesson-row.is-today   { box-shadow: 0 2px 16px rgba(184,92,56,0.08); }
+  .lesson-row.is-upcoming { }
+
+  .lesson-row.jp-today   { border-color: var(--jp-border);    background: var(--jp-bg); }
+  .lesson-row.ios-today  { border-color: var(--ios-border);   background: var(--ios-bg); }
+  .lesson-row.istqb-today{ border-color: var(--istqb-border); background: var(--istqb-bg); }
+
+  .row-index {
+    width: 30px;
+    height: 30px;
+    border-radius: 50%;
+    background: var(--tag-bg);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 0.72rem;
+    font-weight: 500;
+    color: var(--text-muted);
+    flex-shrink: 0;
+  }
+
+  .is-done .row-index { background: var(--done-bg); color: var(--done); }
+
+  .row-date {
+    width: 80px;
+    flex-shrink: 0;
+  }
+
+  .date-day {
+    font-size: 1.3rem;
+    font-family: 'DM Serif Display', serif;
+    line-height: 1;
+  }
+
+  .date-month {
+    font-size: 0.68rem;
+    letter-spacing: 0.07em;
+    text-transform: uppercase;
+    color: var(--text-muted);
+    margin-top: 3px;
+    font-weight: 500;
+  }
+
+  .row-divider {
+    width: 1px;
+    height: 32px;
+    background: var(--border);
+    flex-shrink: 0;
+  }
+
+  .row-topic { flex: 1; min-width: 0; }
+
+  .topic-main {
+    font-size: 0.92rem;
+    font-weight: 400;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+
+  .topic-sub {
+    font-size: 0.72rem;
+    color: var(--text-muted);
+    margin-top: 3px;
+  }
+
+  .row-right {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    flex-shrink: 0;
+  }
+
+  .status-badge {
+    font-size: 0.66rem;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    padding: 3px 9px;
+    border-radius: 20px;
+    font-weight: 500;
+  }
+
+  .badge-done     { background: var(--done-bg);  color: var(--done); }
+  .badge-today-jp    { background: var(--jp-bg);    color: var(--jp-color); }
+  .badge-today-ios   { background: var(--ios-bg);   color: var(--ios-color); }
+  .badge-today-istqb { background: var(--istqb-bg); color: var(--istqb-color); }
+  .badge-upcoming { background: var(--tag-bg);   color: var(--text-muted); }
+
+  .hrs-tag {
+    font-size: 0.68rem;
+    background: var(--tag-bg);
+    color: var(--text-muted);
+    padding: 3px 8px;
+    border-radius: 4px;
+    font-weight: 500;
+  }
+
+  .today-label {
+    font-size: 0.66rem;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    font-weight: 600;
+    margin-bottom: 7px;
+    padding-left: 4px;
+  }
+
+  .today-label.lbl-jp    { color: var(--jp-color); }
+  .today-label.lbl-ios   { color: var(--ios-color); }
+  .today-label.lbl-istqb { color: var(--istqb-color); }
+
+  /* UDEMY WEEK CARDS */
+  .week-row {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    margin-bottom: 10px;
+    display: flex;
+    align-items: center;
+    gap: 18px;
+    padding: 16px 22px;
+    transition: box-shadow 0.2s;
+  }
+
+  .week-row:hover { box-shadow: 0 4px 16px rgba(0,0,0,0.05); }
+  .week-row.is-done    { border-color: var(--done-border); background: #fbfdfc; }
+  .week-row.is-current { }
+  .week-row.ios-current  { border-color: var(--ios-border);   background: var(--ios-bg); }
+  .week-row.istqb-current{ border-color: var(--istqb-border); background: var(--istqb-bg); }
+
+  .week-num {
+    width: 30px;
+    height: 30px;
+    border-radius: 50%;
+    background: var(--tag-bg);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 0.72rem;
+    font-weight: 500;
+    color: var(--text-muted);
+    flex-shrink: 0;
+  }
+
+  .week-row.is-done .week-num { background: var(--done-bg); color: var(--done); }
+
+  .week-dates {
+    width: 160px;
+    flex-shrink: 0;
+  }
+
+  .week-range {
+    font-size: 0.82rem;
+    font-weight: 500;
+    color: var(--text);
+  }
+
+  .week-label {
+    font-size: 0.68rem;
+    color: var(--text-muted);
+    margin-top: 2px;
+    letter-spacing: 0.04em;
+  }
+
+  .week-divider {
+    width: 1px;
+    height: 32px;
+    background: var(--border);
+    flex-shrink: 0;
+  }
+
+  .week-info { flex: 1; min-width: 0; }
+
+  .week-hrs {
+    font-size: 0.92rem;
+    font-weight: 400;
+  }
+
+  .week-cumul {
+    font-size: 0.72rem;
+    color: var(--text-muted);
+    margin-top: 3px;
+  }
+
+  .current-label {
+    font-size: 0.66rem;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    font-weight: 600;
+    margin-bottom: 7px;
+    padding-left: 4px;
+  }
+
+  .current-label.lbl-ios   { color: var(--ios-color); }
+  .current-label.lbl-istqb { color: var(--istqb-color); }
+
+  /* DIVIDER LINE */
+  .section-divider {
+    border: none;
+    border-top: 1px solid var(--border);
+    margin: 48px 0;
+  }
+
+  @media (max-width: 580px) {
+    header { padding: 24px 20px 20px; }
+    main { padding: 24px 16px 0; }
+    .lesson-row, .week-row { padding: 12px 14px; gap: 12px; }
+    .row-date, .week-dates { width: auto; min-width: 60px; }
+    .date-day { font-size: 1.1rem; }
+  }
+</style>
+</head>
+<body>
+
+<header>
+  <div class="header-top">
+    <div class="header-left">
+      <h1>My Learning Hub</h1>
+      <div class="subtitle">Japanese · iOS Dev · ISTQB</div>
+    </div>
+    <div class="header-date" id="today-display"></div>
+  </div>
+  <div class="course-pills">
+    <div class="course-pill pill-jp active" data-section="jp">
+      <div class="pill-dot dot-jp"></div>日本語 EJ-E
+    </div>
+    <div class="course-pill pill-ios active" data-section="ios">
+      <div class="pill-dot dot-ios"></div>iOS Bootcamp
+    </div>
+    <div class="course-pill pill-istqb active" data-section="istqb">
+      <div class="pill-dot dot-istqb"></div>ISTQB Training
+    </div>
+  </div>
+</header>
+
+<main>
+
+  <!-- JAPANESE -->
+  <section class="section" id="section-jp">
+    <div class="section-header">
+      <div class="section-title">超級説明力トレーニング</div>
+      <span class="section-tag tag-jp">Group Class</span>
+    </div>
+    <div class="section-progress">
+      <div class="prog-label">
+        <span>Progress</span>
+        <span id="jp-prog-text"></span>
+      </div>
+      <div class="prog-bar"><div class="prog-fill fill-jp" id="jp-prog-fill" style="width:0%"></div></div>
+    </div>
+    <div id="jp-container"></div>
+  </section>
+
+  <hr class="section-divider">
+
+  <!-- iOS -->
+  <section class="section" id="section-ios">
+    <div class="section-header">
+      <div class="section-title">The Complete iOS App Development Bootcamp</div>
+      <span class="section-tag tag-ios">Udemy · Swift Priority</span>
+    </div>
+    <div class="section-progress">
+      <div class="prog-label">
+        <span>Progress · 7 hrs/week · ~75 hrs total</span>
+        <span id="ios-prog-text"></span>
+      </div>
+      <div class="prog-bar"><div class="prog-fill fill-ios" id="ios-prog-fill" style="width:0%"></div></div>
+    </div>
+    <div id="ios-container"></div>
+  </section>
+
+  <hr class="section-divider">
+
+  <!-- ISTQB -->
+  <section class="section" id="section-istqb">
+    <div class="section-header">
+      <div class="section-title">ISTQB Complete Training</div>
+      <span class="section-tag tag-istqb">Udemy · QA</span>
+    </div>
+    <div class="section-progress">
+      <div class="prog-label">
+        <span>Progress · 2 hrs/week · ~45 hrs total</span>
+        <span id="istqb-prog-text"></span>
+      </div>
+      <div class="prog-bar"><div class="prog-fill fill-istqb" id="istqb-prog-fill" style="width:0%"></div></div>
+    </div>
+    <div id="istqb-container"></div>
+  </section>
+
+</main>
+
+<script>
+// ── UTILS ──────────────────────────────────────────────
+function parseDate(str) {
+  const [y,m,d] = str.split("/").map(Number);
+  return new Date(y, m-1, d);
+}
+function today() {
+  const t = new Date(); t.setHours(0,0,0,0); return t;
+}
+function getStatus(str) {
+  const t = today(), d = parseDate(str);
+  if (d < t) return "done";
+  if (d.getTime() === t.getTime()) return "today";
+  return "upcoming";
+}
+function fmtDay(d)   { return d.getDate(); }
+function fmtMonth(d) { return d.toLocaleDateString("en-US",{month:"short",year:"numeric"}); }
+function fmtShort(d) { return d.toLocaleDateString("en-US",{month:"short",day:"numeric"}); }
+function addDays(d,n){ const r=new Date(d); r.setDate(r.getDate()+n); return r; }
+
+// Today display
+document.getElementById("today-display").textContent =
+  new Date().toLocaleDateString("en-US",{weekday:"long",year:"numeric",month:"long",day:"numeric"});
+
+// ── JAPANESE ───────────────────────────────────────────
+const JP_TOPICS = {
+  21: { jp:"地域文化の継承",            en:"Preserving Local Culture" },
+  22: { jp:"情報格差がもたらす影響",      en:"The Impact of the Information Gap" },
+  23: { jp:"過熱する健康志向",           en:"The Health Obsession Trend" },
+  24: { jp:"SNS時代の「つながり」と孤独",  en:"Connection & Loneliness in the SNS Age" },
+};
+
+const jpSchedule = [
+  { date:"2026/5/13", lesson:21 },
+  { date:"2026/5/20", lesson:22 },
+  { date:"2026/5/27", lesson:22 },
+  { date:"2026/6/3",  lesson:23 },
+  { date:"2026/6/10", lesson:23 },
+  { date:"2026/6/17", lesson:24 },
+  { date:"2026/6/24", lesson:24 },
+];
+
+const jpContainer = document.getElementById("jp-container");
+let jpDone = 0;
+
+jpSchedule.forEach((item, i) => {
+  const status = getStatus(item.date);
+  if (status === "done") jpDone++;
+  const topic = JP_TOPICS[item.lesson];
+  const d = parseDate(item.date);
+
+  const badgeClass = status === "done" ? "badge-done" : status === "today" ? "badge-today-jp" : "badge-upcoming";
+  const badgeText  = status === "done" ? "Done"       : status === "today" ? "Today"          : "Upcoming";
+  const rowClass   = status === "done" ? "is-done"    : status === "today" ? "jp-today"       : "";
+
+  if (status === "today") {
+    const lbl = document.createElement("div");
+    lbl.className = "today-label lbl-jp";
+    lbl.textContent = "▸ Today's Lesson";
+    jpContainer.appendChild(lbl);
+  }
+
+  const row = document.createElement("div");
+  row.className = `lesson-row ${rowClass}`;
+  row.innerHTML = `
+    <div class="row-index">${i+1}</div>
+    <div class="row-date">
+      <div class="date-day">${fmtDay(d)}</div>
+      <div class="date-month">${fmtMonth(d)}</div>
+    </div>
+    <div class="row-divider"></div>
+    <div class="row-topic">
+      <div class="topic-main" style="font-family:'Noto Sans JP',sans-serif">${topic.jp}</div>
+      <div class="topic-sub">Topic ${item.lesson} · ${topic.en}</div>
+    </div>
+    <div class="row-right">
+      <span class="status-badge ${badgeClass}">${badgeText}</span>
+    </div>
+  `;
+  jpContainer.appendChild(row);
+});
+
+const jpTotal = jpSchedule.length;
+document.getElementById("jp-prog-text").textContent = `${jpDone} / ${jpTotal} lessons`;
+document.getElementById("jp-prog-fill").style.width = `${(jpDone/jpTotal)*100}%`;
+
+// ── UDEMY WEEK BUILDER ─────────────────────────────────
+function buildUdemyWeeks(containerId, progTextId, progFillId, colorClass, labelClass, hrsPerWeek, totalHrs, startDateStr) {
+  const container = document.getElementById(containerId);
+  const start = parseDate(startDateStr);
+  const numWeeks = Math.ceil(totalHrs / hrsPerWeek);
+  const todayMs = today().getTime();
+  let currentWeek = -1;
+  let doneWeeks = 0;
+
+  for (let w = 0; w < numWeeks; w++) {
+    const weekStart = addDays(start, w * 7);
+    const weekEnd   = addDays(weekStart, 6);
+    const cumul     = Math.min((w + 1) * hrsPerWeek, totalHrs).toFixed(1);
+
+    let status = "upcoming";
+    if (weekEnd < today()) { status = "done"; doneWeeks++; }
+    else if (weekStart <= today() && today() <= weekEnd) { status = "current"; currentWeek = w; }
+
+    const rowClass  = status === "done"    ? "is-done"
+                    : status === "current" ? `${colorClass}-current`
+                    : "";
+
+    const badgeClass = status === "done"    ? "badge-done"
+                     : status === "current" ? `badge-today-${colorClass}`
+                     : "badge-upcoming";
+    const badgeText  = status === "done"    ? "Done"
+                     : status === "current" ? "This Week"
+                     : "Upcoming";
+
+    if (status === "current") {
+      const lbl = document.createElement("div");
+      lbl.className = `current-label lbl-${colorClass}`;
+      lbl.textContent = "▸ Current Week";
+      container.appendChild(lbl);
+    }
+
+    const row = document.createElement("div");
+    row.className = `week-row ${rowClass}`;
+    row.innerHTML = `
+      <div class="week-num">${w+1}</div>
+      <div class="week-dates">
+        <div class="week-range">${fmtShort(weekStart)} – ${fmtShort(weekEnd)}</div>
+        <div class="week-label">Week ${w+1} of ${numWeeks}</div>
+      </div>
+      <div class="week-divider"></div>
+      <div class="week-info">
+        <div class="week-hrs">${hrsPerWeek} hrs this week</div>
+        <div class="week-cumul">${cumul} / ${totalHrs} hrs cumulative</div>
+      </div>
+      <div class="row-right">
+        <span class="status-badge ${badgeClass}">${badgeText}</span>
+      </div>
+    `;
+    container.appendChild(row);
+  }
+
+  const pct = Math.round((doneWeeks / numWeeks) * 100);
+  document.getElementById(progTextId).textContent = `${doneWeeks} / ${numWeeks} weeks · ${pct}%`;
+  document.getElementById(progFillId).style.width = `${pct}%`;
+}
+
+// iOS — 7 hrs/week, ~75 hrs, starts May 11 2026
+buildUdemyWeeks("ios-container",   "ios-prog-text",   "ios-prog-fill",   "ios",   "ios",   7, 75, "2026/5/11");
+
+// ISTQB — 2 hrs/week, ~45 hrs, starts May 11 2026
+buildUdemyWeeks("istqb-container", "istqb-prog-text", "istqb-prog-fill", "istqb", "istqb", 2, 45, "2026/5/11");
+
+// ── PILL FILTER ────────────────────────────────────────
+document.querySelectorAll(".course-pill").forEach(pill => {
+  pill.addEventListener("click", () => {
+    const sec = pill.dataset.section;
+    const section = document.getElementById(`section-${sec}`);
+    const isActive = pill.classList.contains("active");
+
+    pill.classList.toggle("active",   !isActive);
+    pill.classList.toggle("inactive",  isActive);
+    section.style.display = isActive ? "none" : "";
+
+    // hide/show dividers smartly
+    document.querySelectorAll(".section-divider").forEach(d => d.style.display = "");
+    const visibleSections = [...document.querySelectorAll(".section")]
+      .filter(s => s.style.display !== "none");
+    if (visibleSections.length <= 1) {
+      document.querySelectorAll(".section-divider").forEach(d => d.style.display = "none");
+    }
+  });
+});
+</script>
+</body>
+</html>
